@@ -1,3 +1,4 @@
+//Author:- Nikita Gokhale
 /*Beginning with an empty binary BT, Construct binary BT by inserting the values in the order given.
 After constructing a binary BT perform following operations on it-
 1.Perform in-order/preorder and post order traversal <-
