@@ -1,3 +1,4 @@
+//Author:- Nikita Gokhale
 //A Dictionary stores keywords and its meanings. Provide facility for adding new keywords, deleting keywords,
 //updating values of any entry. Provide facility to display whole data sorted in ascending/ Descending order. Also find how many
 //maximum comparisons may require for finding any keyword. Use Binary Search Tree for implementation.
@@ -29,6 +30,7 @@ class BST
 {
 public:
     Node *root;
+    int flag, count;
 
     BST()
     {
@@ -64,11 +66,13 @@ public:
         if(root == nullptr)
         {
             cout<<"Tree is empty!";
+            flag = 0;
             return nullptr;
         }
         if(traverse == nullptr)
         {
             cout<<"Element not found!";
+            flag = 0;
             return nullptr;
         }
         if(ref_keyword.compare(traverse->keyword) < 0)
@@ -119,11 +123,14 @@ public:
     {
         string ref_meaning;
         traverse = delete_node(traverse, ref_keyword);
-        cout<<"Enter new keyword:-";
-        getline(cin, ref_keyword);
-        cout<<"Enter new meaning:-";
-        getline(cin, ref_meaning);
-        traverse = insert(traverse, ref_keyword, ref_meaning);
+        if(flag)
+        {
+            cout<<"Enter new keyword:-";
+            getline(cin, ref_keyword);
+            cout<<"Enter new meaning:-";
+            getline(cin, ref_meaning);
+            traverse = insert(traverse, ref_keyword, ref_meaning);
+        }
         return traverse;
     }
 
@@ -159,24 +166,28 @@ public:
         if(root == nullptr)
         {
             cout<<"Tree is empty!";
+            flag = 0;
             return nullptr;
         }
         if(traverse == nullptr)
         {
             cout<<"Element not found!";
+            flag = 0;
             return root;
         }
         if(ref_keyword.compare(traverse->keyword)==0)
         {
-            cout<<"Enter new keyword:-";
-            getline(cin, traverse->keyword);
-            cout<<"Enter new meaning:-";
-            getline(cin, traverse->meaning);
-            return root;
+            count++;
+            cout<<traverse->keyword<<":- "<<traverse->meaning<<endl;
+            return traverse;
         }
+        else
+            count++;
+
         if(ref_keyword.compare(traverse->keyword)>0)
-            return(update(traverse->right, ref_keyword));
-        return(update(traverse->left, ref_keyword));
+            return(find_keyword(traverse->right, ref_keyword));
+
+        return(find_keyword(traverse->left, ref_keyword));
     }
 };
 
@@ -184,6 +195,7 @@ int main()
 {
     BST dictionary;
     int choice;
+    Node *find;
     string keyword;
     string meaning;
     while(choice != 7)
@@ -207,17 +219,21 @@ int main()
             break;
 
         case 2:
+            dictionary.flag = 1;
             cout<<"Enter the keyword you want to delete:- ";
             getline(cin, keyword);
             dictionary.root = dictionary.delete_node(dictionary.root, keyword);
-
+            if(dictionary.flag)
+                cout<<"Keyword successfully deleted.";
             break;
 
         case 3:
+            dictionary.flag = 1;
             cout<<"Enter the keyword you want to update:- ";
             getline(cin, keyword);
             dictionary.root = dictionary.update(dictionary.root, keyword);
-            cout<<"Keyword successfully updated.";
+            if(dictionary.flag)
+                cout<<"Keyword successfully updated.";
             break;
 
         case 4:
@@ -226,6 +242,16 @@ int main()
 
         case 5:
             dictionary.desc_order(dictionary.root);
+            break;
+
+        case 6:
+            dictionary.flag = 1;
+            dictionary.count = 0;
+            cout<<"Enter the keyword you want to find:- ";
+            getline(cin, keyword);
+            find = dictionary.find_keyword(dictionary.root, keyword);
+            if(dictionary.flag)
+                cout<<"No. of comparisons = "<<dictionary.count;
             break;
 
         case 7:
