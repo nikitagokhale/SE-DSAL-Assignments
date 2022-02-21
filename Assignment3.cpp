@@ -11,38 +11,33 @@ using namespace std;
 
 class Node
 {
-	int data, lbit, rbit;
+public:
+	int data, lflag, rflag;
 	Node *left;
 	Node *right;
 
-public:
-	Node(int data = 0, int lbit = 0, int rbit = 0)
+	Node(int data = 0, int lflag = 0, int rflag = 0)
 	{
 		this->data = data;
-		this->lbit = lbit;
-		this->rbit = rbit;
+		this->lflag = lflag;
+		this->rflag = rflag;
 		left = nullptr;
 		right = nullptr;
 	}
 
-	friend class BT;
+	friend class TBT;
 };
 
-class Stack
+class TBT
 {
-
-};
-
-class BT
-{
+public:
 	Node *head;
 	Node *parent;
 	Node *child;
 	Node *root;
 	Node *traverse;
 
-public:
-	BT()
+	TBT()
 	{
 		head = nullptr;
 		parent = nullptr;
@@ -51,81 +46,104 @@ public:
 		traverse = nullptr;
 	}
 
-	Node *insert(Node *traverse, int &ref_data)
+	Node *create(Node *traverse)
 	{
-		int data;
-
-		if(head == nullptr)
-		{
-			Node *head = new Node();
-			head->left = head;
-			head->right = head;
-			head->lbit = 1;
-			head->rbit = 1;
-		}
-
-		if(head->data == 0)
+		if (root == nullptr)
 		{
 			traverse = new Node();
-			head->left = traverse;
-			traverse->data = ref_data;
-			head->data++;
-			traverse->left = traverse;
-			traverse->right = traverse;
+			head = new Node();
 			root = traverse;
+			head->left = traverse;
+			head->right = head;
+			traverse->left = traverse->right = head;
+			cout<<"Enter data for root node:- ";
+			cin>>traverse->data;
+			traverse = createSubTree(traverse);
 			return traverse;
 		}
-
-		if(traverse == nullptr)
+		else
 		{
-		    traverse = new Node();
-		    traverse->data = ref_data;
-		    head->data++;
-		    traverse = find_inorder_succ_pred(traverse);
-		    return traverse;
+			cout<<"Tree is already created!";
+			return root;
 		}
+	}
 
-		if(ref_data > traverse->data)
+	Node *createSubTree(Node *traverse)
+	{
+		int flag;
+		cout << "Create left sub tree for node " << traverse->data << "? Enter 0/1:- ";
+		cin >> flag;
+		if (flag)
 		{
-			traverse->right = insert(traverse->right, ref_data);
-			return traverse;
+			Node *temp = new Node();
+			temp->left = traverse->left;
+			temp->right = traverse;
+			traverse->left = temp;
+			traverse->lflag = 1;
+			cout<<"Enter the data:- ";
+			cin>>temp->data;
+			createSubTree(traverse->left);
 		}
-
-		traverse->left = insert(traverse->left, ref_data);
+		cout << "Create right sub tree for node " << traverse->data<< "? Enter 0/1:- ";
+		cin >> flag;
+		if (flag)
+		{
+			Node *temp = new Node();
+			temp->left = traverse;
+			temp->right = traverse->right;
+			traverse->right = temp;
+			traverse->rflag = 1;
+			cout<<"Enter the data:- ";
+			cin>>temp->data;
+			createSubTree(traverse->right);
+		}
 		return traverse;
 	}
 
-	Node *find_inorder_succ_pred(Node *traverse)
+	Node *inorder(Node *traverse)
 	{
+		while(traverse->lflag)
+			traverse = traverse->left;
 
+		while(traverse!=head)
+		{
+			cout<<traverse->data<<" ";
+			traverse = traverse->right;
+			while(traverse->lflag)
+				traverse = traverse->left;
+		}
+
+		return root;
 	}
 };
 
 int main()
 {
-    BT tree;
-    int choice, data
-    while(choice != 7)
-    {
-        cout<<"\n*************START*************";
-        cout<<"\nMAIN MENU\n1. Insert Node.\n";
-        cout<<"Enter your choice:- ";
-        cin>>choice;
-        cout<<endl;
-        switch(choice)
-        {
-        case 1:
-            cout<<"Enter the data:- ";
-            cin>>data;
-            tree.root = tree.insert(tree.root, data);
-        	break;
+	TBT tree;
+	int choice;
+	while (choice != 7)
+	{
+		cout << "\n*************START*************";
+		cout << "\nMAIN MENU\n1. Create TBT.\n";
+		cout << "Enter your choice:- ";
+		cin >> choice;
+		cout << endl;
+		switch (choice)
+		{
+		case 1:
+			tree.root = tree.create(tree.root);
+			break;
 
-        default:
-            cout<<"Please enter a valid choice!";
-            break;
-        }
-        cout<<"\n**************END**************\n\n";
-    }
+		case 2:
+			tree.root = tree.inorder(tree.root);
+			break;
 
-    return 0;
+		default:
+			cout << "Please enter a valid choice!";
+			break;
+		}
+		cout << "\n**************END**************\n\n";
+	}
+
+	return 0;
 }
