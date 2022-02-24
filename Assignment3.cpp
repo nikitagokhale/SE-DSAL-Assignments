@@ -32,18 +32,18 @@ class TBT
 {
 public:
 	Node *head;
-	Node *parent;
-	Node *child;
+	//Node *parent;
+	//Node *child;
 	Node *root;
-	Node *traverse;
+	//Node *traverse;
 
 	TBT()
 	{
 		head = nullptr;
-		parent = nullptr;
-		child = nullptr;
+		//parent = nullptr;
+		//child = nullptr;
 		root = nullptr;
-		traverse = nullptr;
+		//traverse = nullptr;
 	}
 
 	Node *create(Node *traverse)
@@ -82,7 +82,7 @@ public:
 			traverse->lflag = 1;
 			cout<<"Enter the data:- ";
 			cin>>temp->data;
-			createSubTree(traverse->left);
+			traverse->left = createSubTree(traverse->left);
 		}
 		cout << "Create right sub tree for node " << traverse->data<< "? Enter 0/1:- ";
 		cin >> flag;
@@ -95,7 +95,7 @@ public:
 			traverse->rflag = 1;
 			cout<<"Enter the data:- ";
 			cin>>temp->data;
-			createSubTree(traverse->right);
+			traverse->right = createSubTree(traverse->right);
 		}
 		return traverse;
 	}
@@ -108,6 +108,7 @@ public:
 		while(traverse!=head)
 		{
 			cout<<traverse->data<<" ";
+			
 			traverse = traverse->right;
 			while(traverse->lflag)
 				traverse = traverse->left;
@@ -124,7 +125,7 @@ int main()
 	while (choice != 7)
 	{
 		cout << "\n*************START*************";
-		cout << "\nMAIN MENU\n1. Create TBT.\n";
+		cout << "\nMAIN MENU\n1. Create TBT.\n2. Inorder traversal.\n";
 		cout << "Enter your choice:- ";
 		cin >> choice;
 		cout << endl;
