@@ -31,18 +31,12 @@ class TBT
 {
 public:
 	Node *head;
-	//Node *parent;
-	//Node *child;
 	Node *root;
-	//Node *traverse;
 
 	TBT()
 	{
 		head = nullptr;
-		//parent = nullptr;
-		//child = nullptr;
 		root = nullptr;
-		//traverse = nullptr;
 	}
 
 	Node *create(Node *traverse)
@@ -117,6 +111,8 @@ public:
 			}
 			traverse = traverse->right;
 		}
+		cout<<"Tree is empty!";
+		return nullptr;
 	}
 
 	Node *preorder(Node *traverse)
@@ -138,9 +134,9 @@ public:
 			}
 			traverse = traverse->right;
 		}
+		cout<<"Tree is empty!";
+		return nullptr;
 	}
-	
-	
 };
 
 int main()
@@ -150,7 +146,7 @@ int main()
 	while (choice != 7)
 	{
 		cout << "\n*************START*************";
-		cout << "\nMAIN MENU\n1. Create TBT.\n2. Inorder traversal.\n";
+		cout << "\nMAIN MENU\n1. Create TBT.\n2. Inorder traversal.\n3. Preorder traversal.\n7. Exit.\n";
 		cout << "Enter your choice:- ";
 		cin >> choice;
 		cout << endl;
@@ -167,7 +163,7 @@ int main()
 		case 3:
 			tree.head = tree.preorder(tree.root);
 			break;
-			
+
 		case 7:
 			cout<<"Thank you!";
 			break;
@@ -178,6 +174,5 @@ int main()
 		}
 		cout << "\n**************END**************\n\n";
 	}
-
 	return 0;
 }
