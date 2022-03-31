@@ -78,7 +78,7 @@ public:
             cout<<"The hash table is full!";
 	}
 
-	void insert_entry_wr()
+	void insert_entry_with_replacement()
 	{
 		long int key, key_existing_entry;
 		if(!is_full())
@@ -123,9 +123,10 @@ public:
             cout<<"Name:- "<<hashtable[key].name<<", Telephone number:- "<<hashtable[key].tele_num<<"\nNo. of comparisons ="<<comparison;
         else
             cout<<"Number not found!"<<"\nNo. of comparisons ="<<comparison;
+        cout<<endl;
 	}
 
-	void display_ht()
+	void display_hashtable()
 	{
 	    for(int i=0;i<SIZE;i++)
             cout<<i<<". Name:- "<<hashtable[i].name<<", Telephone number:- "<<hashtable[i].tele_num<<endl;
@@ -134,34 +135,87 @@ public:
 
 int main()
 {
-	HashTable Telephone_Diary;
+	HashTable telephone_diary_without_replacement, telephone_diary_with_replacement;
 	int choice;
-	while (choice != 7)
+	cout << "\n****************************START****************************";
+	while (choice != 3)
 	{
-		cout << "\n*************START*************";
-		cout << "\nMAIN MENU\n1. Insert Hash Entry.\n2. Insert Hash Entry with replacement.\n3. Search a hash entry.\n4. Display Hash Table\n7. Exit.\n";
+        cout << "\nMAIN MENU\n1. Telephone diary without replacement.\n2. Telephone diary with replacement.\n3. Exit.\n";
 		cout << "Enter your choice:- ";
 		cin >> choice;
-		cout << endl;
-		switch (choice)
+		switch(choice)
 		{
-		case 1:
-			Telephone_Diary.insert_entry();
-			break;
+        case 1:
+            cout << "\n*************WITHOUT REPLACEMENT*************";
+            int choice_without_replacement;
+            while(choice_without_replacement != 4)
+            {
+                cout << "\nMAIN MENU\n1. Insert Hash Entry.\n2. Search a hash entry.\n3. Display Hash Table\n4. Exit.\n";
+                cout << "Enter your choice:- ";
+                cin >> choice_without_replacement;
+                cout << endl;
+                switch (choice_without_replacement)
+                {
+                case 1:
+                    telephone_diary_without_replacement.insert_entry();
+                    break;
 
-		case 2:
-		    Telephone_Diary.insert_entry_wr();
-		    break;
+                case 2:
+                    telephone_diary_without_replacement.search_entry();
+                    break;
 
-		case 3:
-			Telephone_Diary.search_entry();
-			break;
+                case 3:
+                    telephone_diary_without_replacement.display_hashtable();
+                    break;
 
-		case 4:
-			Telephone_Diary.display_ht();
-			break;
+                case 4:
+                    cout << "Thank you!";
+                    break;
 
-		case 7:
+                default:
+                    cout << "Please enter a valid choice!";
+                    break;
+                }
+            }
+            cout << "\n**************END WITHOUT REPLACEMENT**************\n\n";
+            break;
+
+        case 2:
+            cout << "\n*************WITH REPLACEMENT*************";
+            int choice_with_replacement;
+            while(choice_with_replacement != 4)
+            {
+                cout << "\nMAIN MENU\n1. Insert Hash Entry.\n2. Search a hash entry.\n3. Display Hash Table\n4. Exit.\n";
+                cout << "Enter your choice:- ";
+                cin >> choice_with_replacement;
+                cout << endl;
+                switch (choice_with_replacement)
+                {
+                case 1:
+                    telephone_diary_with_replacement.insert_entry_with_replacement();
+                    break;
+
+                case 2:
+                    telephone_diary_with_replacement.search_entry();
+                    break;
+
+                case 3:
+                    telephone_diary_with_replacement.display_hashtable();
+                    break;
+
+                case 4:
+                    cout << "Thank you!";
+                    break;
+
+                default:
+                    cout << "Please enter a valid choice!";
+                    break;
+                }
+            }
+            cout << "\n**************WITH REPLACEMENT**************\n\n";
+            break;
+
+        case 3:
 			cout << "Thank you!";
 			break;
 
@@ -169,8 +223,8 @@ int main()
 			cout << "Please enter a valid choice!";
 			break;
 		}
-		cout << "\n**************END**************\n\n";
+		cout<<"\n\n";
 	}
-
+    cout << "\n*****************************END*****************************\n\n";
 	return 0;
 }
