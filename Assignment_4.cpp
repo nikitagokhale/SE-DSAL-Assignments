@@ -7,7 +7,7 @@
 //============================================================================
 
 #include <iostream>
-#include<string>
+#include <string>
 #define SIZE 10
 using namespace std;
 
@@ -45,12 +45,12 @@ public:
         return true;
 	}
 
-	void swap_(HashEntry &ref_hashtable, HashEntry &ref_hashentry)
+	void swap_(HashEntry &ref_hashtable_entry, HashEntry &ref_hashentry)
 	{
 	    HashEntry temp;
 	    temp = ref_hashentry;
-	    ref_hashentry = ref_hashtable;
-	    ref_hashtable = temp;
+	    ref_hashentry = ref_hashtable_entry;
+	    ref_hashtable_entry = temp;
 	}
 
 	void insert_entry()
@@ -108,7 +108,7 @@ public:
 
 	void search_entry()
 	{
-	    int count = 0;
+	    int count = 0, comparison = 1;
 		long int telephone_num, key;
 		cout<<"Enter the telephone number you want to search:- ";
 		cin>>telephone_num;
@@ -117,11 +117,12 @@ public:
         {
             key = (key+1) % SIZE;
             count++;
+            comparison++;
         }
         if(count<SIZE)
-            cout<<"Name:- "<<hashtable[key].name<<", Telephone number:- "<<hashtable[key].tele_num;
+            cout<<"Name:- "<<hashtable[key].name<<", Telephone number:- "<<hashtable[key].tele_num<<"\nNo. of comparisons ="<<comparison;
         else
-            cout<<"Number not found!";
+            cout<<"Number not found!"<<"\nNo. of comparisons ="<<comparison;
 	}
 
 	void display_ht()
