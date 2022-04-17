@@ -143,7 +143,7 @@ int main()
 {
 	TBT tree;
 	int choice;
-	while (choice != 7)
+	while (choice != 4)
 	{
 		cout << "\n*************START*************";
 		cout << "\nMAIN MENU\n1. Create TBT.\n2. Inorder traversal.\n3. Preorder traversal.\n7. Exit.\n";
@@ -164,7 +164,7 @@ int main()
 			tree.head = tree.preorder(tree.root);
 			break;
 
-		case 7:
+		case 4:
 			cout<<"Thank you!";
 			break;
 
