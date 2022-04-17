@@ -78,14 +78,13 @@ public:
         {
             traverse = traverse->next;
             comparisons++;
-            while(keyword.compare(traverse->keyword) != 0 && traverse != nullptr)
+            while(traverse != nullptr && keyword.compare(traverse->keyword) != 0)
             {
                 comparisons++;
                 traverse = traverse->next;
             }
         }
-
-        if(keyword.compare(traverse->keyword) == 0)
+        if(traverse != nullptr && keyword.compare(traverse->keyword) == 0)
             cout<<"Keyword:- "<<traverse->keyword<<"  Meaning:- "<<traverse->meaning<<"\nComparisons:- "<<comparisons;
         else
             cout<<"Data not found!"<<"\nComparisons:- "<<comparisons;
@@ -110,23 +109,52 @@ public:
     void delete_entry()
     {
     	string keyword, meaning;
-    	int key, flag=0;
-    	Node *temp1;
+    	int key;
     	cin.ignore();
     	cout<<"Enter the keyword you want to delete:- ";
     	getline(cin, keyword);
     	key = get_key(keyword);
     	traverse = &hashtable[key];
-    	if(keyword.compare(traverse->keyword) != 0 && traverse->next != nullptr)
+    	if(traverse->next != nullptr && keyword.compare(traverse->keyword) != 0)
     	{
     	    traverse = traverse->next;
-    	    while(keyword.compare(traverse->keyword) != 0 && traverse != nullptr)
-    	    {
-    	    	temp1 = traverse;
+    	    while(traverse != nullptr && keyword.compare(traverse->keyword) != 0)
     	        traverse = traverse->next;
-    	    }
-    	    flag = 1;
+            if(traverse!= nullptr && traverse->next != nullptr)
+            {
+                Node *temp = traverse->next;
+                traverse->keyword = traverse->next->keyword;
+                traverse->meaning = traverse->next->meaning;
+                traverse->next = traverse->next->next;
+                delete temp;
+                cout<<"Keyword deleted successfully!";
+            }
+            else if(traverse != nullptr && traverse->next == nullptr)
+            {
+                Node *temp = traverse;
+                traverse = nullptr;
+                delete temp;
+                cout<<"Keyword deleted successfully!";
+            }
+            else
+                cout<<"Keyword not found!";
     	}
+    	else if(keyword.compare(traverse->keyword)==0)
+        {
+            if(traverse->next == nullptr)
+                traverse->keyword = traverse->meaning = "\0";
+            else
+            {
+                Node *temp = traverse->next;
+                traverse->keyword = traverse->next->keyword;
+                traverse->meaning = traverse->next->meaning;
+                traverse->next = traverse->next->next;
+                delete temp;
+            }
+        	cout<<"Keyword deleted successfully!";
+        }
+        else
+            cout<<"Keyword not found!";
     }
 };
 
@@ -135,7 +163,7 @@ int main()
     HashTable obj;
     string keyword, meaning;
     int choice;
-    while(choice != 4)
+    while(choice != 5)
     {
         cout << "\n****************************START****************************";
         cout << "\nMAIN MENU\n1. Insert hash entry.\n2. Search a hash entry.\n3. Display Hash Table.\n4. Delete hash entry.\n5. Exit.\n";
