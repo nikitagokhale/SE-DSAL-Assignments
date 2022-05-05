@@ -32,8 +32,12 @@ class HashTable
     Node *traverse;
 
 public:
-    HashTable()
+    int flag, comparisons;
+
+    HashTable(int flag = 0, int comparisons = 0)
     {
+    	this->flag = flag;
+    	this->comparisons = comparisons;
         traverse = nullptr;
     }
 
@@ -52,42 +56,48 @@ public:
     void insert_entry(string &ref_keyword, string &ref_meaning)
     {
     	int key;
-        key = get_key(ref_keyword);
-        traverse = &hashtable[key];
-        if(hashtable[key].keyword != "\0")
+    	flag = 0;
+    	search_entry(ref_keyword);
+        if(!flag)
         {
-            while(traverse->next != nullptr)
-                traverse = traverse->next;
-            traverse->next = new Node();
-            traverse = traverse->next;
+        	key = get_key(ref_keyword);
+        	traverse = &hashtable[key];
+        	if(hashtable[key].keyword != "\0")
+        	{
+        		while(traverse->next != nullptr)
+        			traverse = traverse->next;
+        	    traverse->next = new Node();
+        	    traverse = traverse->next;
+        	}
+        	traverse->keyword = ref_keyword;
+        	traverse->meaning = ref_meaning;
         }
-        traverse->keyword = ref_keyword;
-        traverse->meaning = ref_meaning;
+        else
+        	cout<<"Keyword is repeated!";
     }
 
-    void search_entry()
+    void search_entry(string &ref_keyword)
     {
-    	string keyword, meaning;
-        int key, comparisons = 1;
-        cin.ignore();
-        cout<<"Enter the keyword you want to search:- ";
-        getline(cin, keyword);
-        key = get_key(keyword);
+    	string meaning;
+        int key;
+        comparisons = 1;
+        key = get_key(ref_keyword);
         traverse = &hashtable[key];
-        if(keyword.compare(traverse->keyword) != 0 && traverse->next != nullptr)
+        if(ref_keyword.compare(traverse->keyword) != 0 && traverse->next != nullptr)
         {
             traverse = traverse->next;
             comparisons++;
-            while(traverse != nullptr && keyword.compare(traverse->keyword) != 0)
+            while(traverse != nullptr && ref_keyword.compare(traverse->keyword) != 0)
             {
                 comparisons++;
                 traverse = traverse->next;
             }
         }
-        if(traverse != nullptr && keyword.compare(traverse->keyword) == 0)
-            cout<<"Keyword:- "<<traverse->keyword<<"  Meaning:- "<<traverse->meaning<<"\nComparisons:- "<<comparisons;
-        else
-            cout<<"Data not found!"<<"\nComparisons:- "<<comparisons;
+        if(traverse != nullptr && ref_keyword.compare(traverse->keyword) == 0)
+        {
+        	flag = 1;
+            cout<<"Keyword:- "<<traverse->keyword<<"  Meaning:- "<<traverse->meaning<<endl;
+        }
     }
 
     void display_hashtable()
@@ -117,24 +127,18 @@ public:
     	traverse = &hashtable[key];
     	if(traverse->next != nullptr && keyword.compare(traverse->keyword) != 0)
     	{
+    		Node *temp = traverse;
     	    traverse = traverse->next;
     	    while(traverse != nullptr && keyword.compare(traverse->keyword) != 0)
+    	    {
+    	    	temp = traverse;
     	        traverse = traverse->next;
-            if(traverse!= nullptr && traverse->next != nullptr)
+    	    }
+            if(traverse!= nullptr)
             {
-                Node *temp = traverse->next;
-                traverse->keyword = traverse->next->keyword;
-                traverse->meaning = traverse->next->meaning;
-                traverse->next = traverse->next->next;
-                delete temp;
-                cout<<"Keyword deleted successfully!";
-            }
-            else if(traverse != nullptr && traverse->next == nullptr)
-            {
-                Node *temp = traverse;
-                traverse = nullptr;
-                delete temp;
-                cout<<"Keyword deleted successfully!";
+            	temp->next = traverse->next;
+            	delete traverse;
+            	cout<<"Keyword deleted successfully!";
             }
             else
                 cout<<"Keyword not found!";
@@ -182,7 +186,13 @@ int main()
             break;
 
         case 2:
-            obj.search_entry();
+        	cin.ignore();
+        	cout<<"Enter the keyword you want to search:- ";
+        	getline(cin, keyword);
+            obj.search_entry(keyword);
+            if(!obj.flag)
+            	cout<<"Data not found!\n";
+            cout<<"Comparisons:- "<<obj.comparisons;
             break;
 
         case 3:
