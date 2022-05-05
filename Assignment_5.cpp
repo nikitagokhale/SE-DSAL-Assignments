@@ -80,7 +80,7 @@ public:
     {
     	string meaning;
         int key;
-        flag = 1;
+        flag = 0;
         comparisons = 1;
         key = get_key(ref_keyword);
         traverse = &hashtable[key];
